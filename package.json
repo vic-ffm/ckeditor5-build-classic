@@ -1,5 +1,5 @@
 {
-  "name": "@ckeditor/ckeditor5-build-classic",
+  "name": "@ckeditor/ffmvic-ckeditor5-build-classic",
   "version": "18.0.0",
   "description": "The classic editor build of CKEditor 5 – the best browser-based rich text editor.",
   "keywords": [
@@ -94,5 +94,9 @@
     "hooks": {
       "pre-commit": "lint-staged"
     }
+  },
+  "dependencies": {
+    "@ckeditor/ckeditor5-font": "^18.0.0",
+    "@ckeditor/ckeditor5-upload": "^18.0.0"
   }
 }
