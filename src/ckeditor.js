@@ -33,6 +33,7 @@ import TextTransformation from '@ckeditor/ckeditor5-typing/src/texttransformatio
 // Extra plugin
 import FontColor from '@ckeditor/ckeditor5-font/src/fontcolor';
 import Base64UploadAdapter from '@ckeditor/ckeditor5-upload/src/adapters/base64uploadadapter';
+import SimpleUploadAdapter from '@ckeditor/ckeditor5-upload/src/adapters/simpleuploadadapter';
 
 export default class ClassicEditor extends ClassicEditorBase { }
 
