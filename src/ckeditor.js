@@ -32,7 +32,7 @@ import TextTransformation from '@ckeditor/ckeditor5-typing/src/texttransformatio
 
 // Extra plugin
 import FontColor from '@ckeditor/ckeditor5-font/src/fontcolor';
-import CustomImageUploadAdapterPlugin from '../adapters/custom-image-upload.adapter.js';
+import CustomImageUploadAdapterPlugin from './adapters/custom-image-upload.adapter.js';
 
 export default class ClassicEditor extends ClassicEditorBase { }
 

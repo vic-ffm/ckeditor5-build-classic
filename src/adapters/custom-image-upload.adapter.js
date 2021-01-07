@@ -1,3 +1,8 @@
+/* Refernces
+- https://github.com/ckeditor/ckeditor5/blob/master/packages/ckeditor5-upload/src/adapters/simpleuploadadapter.js
+- https://ckeditor.com/docs/ckeditor5/latest/framework/guides/deep-dive/upload-adapter.html
+*/
+
 /* globals XMLHttpRequest, FormData, console */
 
 /**
