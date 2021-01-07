@@ -32,7 +32,6 @@ import TextTransformation from '@ckeditor/ckeditor5-typing/src/texttransformatio
 
 // Extra plugin
 import FontColor from '@ckeditor/ckeditor5-font/src/fontcolor';
-import SimpleUploadAdapter from '@ckeditor/ckeditor5-upload/src/adapters/simpleuploadadapter';
 
 export default class ClassicEditor extends ClassicEditorBase { }
 
@@ -103,6 +102,5 @@ ClassicEditor.defaultConfig = {
 		]
 	},
 	// This value must be kept in sync with the language defined in webpack.config.js.
-	language: 'en',
-	extraPlugins: [ SimpleUploadAdapter ]
+	language: 'en'
 };
