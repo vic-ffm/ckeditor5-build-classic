@@ -1,10 +1,6 @@
 {
   "name": "@ckeditor/ffmvic-ckeditor5-build-classic",
-<<<<<<< HEAD
   "version": "18.0.1",
-=======
-  "version": "18.0.0",
->>>>>>> master
   "description": "The classic editor build of CKEditor 5 – the best browser-based rich text editor.",
   "keywords": [
     "ckeditor5-build",
