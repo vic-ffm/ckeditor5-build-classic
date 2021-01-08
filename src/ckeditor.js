@@ -32,7 +32,7 @@ import TextTransformation from '@ckeditor/ckeditor5-typing/src/texttransformatio
 
 // Extra plugin
 import FontColor from '@ckeditor/ckeditor5-font/src/fontcolor';
-import Base64UploadAdapter from '@ckeditor/ckeditor5-upload/src/adapters/base64uploadadapter';
+import CustomImageUploadAdapterPlugin from './adapters/custom-image-upload.adapter.js';
 
 export default class ClassicEditor extends ClassicEditorBase { }
 
@@ -104,5 +104,5 @@ ClassicEditor.defaultConfig = {
 	},
 	// This value must be kept in sync with the language defined in webpack.config.js.
 	language: 'en',
-	extraPlugins: [ Base64UploadAdapter ]
+	extraPlugins: [ CustomImageUploadAdapterPlugin ]
 };
