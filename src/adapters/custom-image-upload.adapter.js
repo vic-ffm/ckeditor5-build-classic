@@ -65,7 +65,8 @@ class CustomImageUploadAdapter {
 
 	/**
 	 * Initializes the `XMLHttpRequest` object using the URL specified as
-	 * {@link module:upload/adapters/customimageuploadadapter~CustomImageUploadConfig#uploadUrl `customImageUpload.uploadUrl`}
+	 * {@link module:upload/adapters/customimageuploadadapter~CustomImageUploadConfig#baseApiUrl `customImageUpload.baseApiUrl`}
+	 * {@link module:upload/adapters/customimageuploadadapter~CustomImageUploadConfig#api `customImageUpload.api`}
 	 * in the editor's configuration.
 	 *
 	 * @private
@@ -78,7 +79,7 @@ class CustomImageUploadAdapter {
 		// a POST request with JSON as a data structure but your configuration
 		// could be different.
 
-		xhr.open( 'POST', this.options.uploadUrl, true );
+		xhr.open( 'POST', `${ this.options.baseApiUrl }/${ this.options.api }`, true );
 		xhr.responseType = 'json';
 	}
 
@@ -119,7 +120,7 @@ class CustomImageUploadAdapter {
 			// This URL will be used to display the image in the content. Learn more in the
 			// UploadAdapter#upload documentation.
 			resolve( {
-				default: response.url
+				default: `${ this.options.baseApiUrl }/${ this.options.api }/${ response.imageId }`
 			} );
 		} );
 
@@ -169,7 +170,7 @@ export default function CustomImageUploadAdapterPlugin( editor ) {
 
 	if ( !options ) {
 		/**
-		 * The {@link path:./adapters/customimageupload~CustomImageUploadConfig#uploadUrl `config.customImageUpload.uploadUrl`}
+		 * The {@link path:./adapters/customimageupload~CustomImageUploadConfig `config.customImageUpload`}
 		 * configuration required by the {@link path:./adapters/customimageupload~CustomImageUploadAdapter `CustomImageUploadAdapter`}
 		 * is missing. Make sure the correct URL is specified for the image upload to work properly.
 		 *
@@ -179,22 +180,36 @@ export default function CustomImageUploadAdapterPlugin( editor ) {
 		return;
 	}
 
-	if ( !options.uploadUrl ) {
+	if ( !options.baseApiUrl ) {
 		/**
-		 * The {@link path:./adapters/customimageupload~CustomImageUploadConfig#uploadUrl `config.customImageUpload.uploadUrl`}
+		 * The {@link path:./adapters/customimageupload~CustomImageUploadConfig#baseApiUrl `config.customImageUpload.baseApiUrl`}
 		 * configuration required by the {@link path:./adapters/customimageupload~CustomImageUploadAdapter `CustomImageUploadAdapter`}
 		 * is missing. Make sure the correct URL is specified for the image upload to work properly.
 		 *
-		 * @error custom-image-upload-adapter-missing-uploadurl
+		 * @error custom-image-upload-adapter-missing-baseApiUrl
 		 */
-		console.error( 'custom-image-upload-adapter-missing-uploadurl' );
+		console.error( 'custom-image-upload-adapter-missing-baseApiUrl' );
 
 		return;
 	}
 
-	if ( options.uploadUrl && !options.authOpenIdService ) {
+	if ( !options.api ) {
 		/**
-		 * The {@link path:./adapters/customimageupload~CustomImageUploadConfig#uploadUrl `config.customImageUpload.uploadUrl`}
+		 * The {@link path:./adapters/customimageupload~CustomImageUploadConfig#api `config.customImageUpload.api`}
+		 * configuration required by the {@link path:./adapters/customimageupload~CustomImageUploadAdapter `CustomImageUploadAdapter`}
+		 * is missing. Make sure the correct URL is specified for the image upload to work properly.
+		 *
+		 * @error custom-image-upload-adapter-missing-api
+		 */
+		console.error( 'custom-image-upload-adapter-missing-api' );
+
+		return;
+	}
+
+	if ( options.baseApiUrl && options.api && !options.authOpenIdService ) {
+		/**
+		 * The
+		 * {@link path:./adapters/customimageupload~CustomImageUploadConfig#authOpenIdService `config.customImageUpload.authOpenIdService`}
 		 * configuration required by the {@link path:./adapters/customimageupload~CustomImageUploadAdapter `CustomImageUploadAdapter`}
 		 * is missing. Make sure the correct URL is specified for the image upload to work properly.
 		 *
