@@ -65,6 +65,13 @@ ClassicEditor
 	} );
 ```
 
+To publish the package run following npm commands in order:
+
+```bash
+npm pack
+npm publish .\ckeditor-ffmvic-ckeditor5-build-classic-18.2.0.tgz --registry https://pkgs.dev.azure.com/ffm-vic-apps/_packaging/npm-feed/npm/registry/
+```
+
 **Note:** If you are planning to integrate CKEditor 5 deep into your application, it is actually more convenient and recommended to install and import the source modules directly (like it happens in `ckeditor.js`). Read more in the [Advanced setup guide](https://ckeditor.com/docs/ckeditor5/latest/builds/guides/integration/advanced-setup.html).
 
 ## License
