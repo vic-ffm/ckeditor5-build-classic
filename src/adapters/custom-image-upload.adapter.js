@@ -132,6 +132,7 @@ class CustomImageUploadAdapter {
 				if ( evt.lengthComputable ) {
 					loader.uploadTotal = evt.total;
 					loader.uploaded = evt.loaded;
+					this.uploadComplete = evt.loaded;
 				}
 			} );
 		}
@@ -144,6 +145,8 @@ class CustomImageUploadAdapter {
 	 * @param {File} file File instance to be uploaded.
 	 */
 	_sendRequest( file ) {
+		this.uploadComplete = false;
+
 		// Set headers
 		this.xhr.setRequestHeader(
 			'authorization',
@@ -165,66 +168,95 @@ class CustomImageUploadAdapter {
 	}
 }
 
-export default function CustomImageUploadAdapterPlugin( editor ) {
-	const options = editor.config.get( 'customImageUpload' );
+import Plugin from '@ckeditor/ckeditor5-core/src/plugin';
+import FileRepository from '@ckeditor/ckeditor5-upload/src/filerepository';
 
-	if ( !options ) {
-		/**
-		 * The {@link path:./adapters/customimageupload~CustomImageUploadConfig `config.customImageUpload`}
-		 * configuration required by the {@link path:./adapters/customimageupload~CustomImageUploadAdapter `CustomImageUploadAdapter`}
-		 * is missing. Make sure the correct URL is specified for the image upload to work properly.
-		 *
-		 * @error custom-image-upload-adapter-missing-customImageUploadConfig
-		 */
-		console.error( 'custom-image-upload-adapter-missing-customImageUploadConfig' );
-		return;
+export default class CustomImageUploadAdapterPlugin extends Plugin {
+	constructor( editor ) {
+		// Here, it calls the parent class's constructor with editor
+		super(editor);
+		const options = editor.config.get( 'customImageUpload' );
+
+		if ( !options ) {
+			/**
+			 * The {@link path:./adapters/customimageupload~CustomImageUploadConfig `config.customImageUpload`}
+			 * configuration required by the {@link path:./adapters/customimageupload~CustomImageUploadAdapter `CustomImageUploadAdapter`}
+			 * is missing. Make sure the correct URL is specified for the image upload to work properly.
+			 *
+			 * @error custom-image-upload-adapter-missing-customImageUploadConfig
+			 */
+			console.error( 'custom-image-upload-adapter-missing-customImageUploadConfig' );
+			return;
+		}
+
+		if ( !options.baseApiUrl ) {
+			/**
+			 * The {@link path:./adapters/customimageupload~CustomImageUploadConfig#baseApiUrl `config.customImageUpload.baseApiUrl`}
+			 * configuration required by the {@link path:./adapters/customimageupload~CustomImageUploadAdapter `CustomImageUploadAdapter`}
+			 * is missing. Make sure the correct URL is specified for the image upload to work properly.
+			 *
+			 * @error custom-image-upload-adapter-missing-baseApiUrl
+			 */
+			console.error( 'custom-image-upload-adapter-missing-baseApiUrl' );
+
+			return;
+		}
+
+		if ( !options.api ) {
+			/**
+			 * The {@link path:./adapters/customimageupload~CustomImageUploadConfig#api `config.customImageUpload.api`}
+			 * configuration required by the {@link path:./adapters/customimageupload~CustomImageUploadAdapter `CustomImageUploadAdapter`}
+			 * is missing. Make sure the correct URL is specified for the image upload to work properly.
+			 *
+			 * @error custom-image-upload-adapter-missing-api
+			 */
+			console.error( 'custom-image-upload-adapter-missing-api' );
+
+			return;
+		}
+
+		if ( options.baseApiUrl && options.api && !options.authOpenIdService ) {
+			/**
+			 * The
+			 * {@link path:./adapters/customimageupload~CustomImageUploadConfig#authOpenIdService `config.customImageUpload.authOpenIdService`}
+			 * configuration required by the {@link path:./adapters/customimageupload~CustomImageUploadAdapter `CustomImageUploadAdapter`}
+			 * is missing. Make sure the correct URL is specified for the image upload to work properly.
+			 *
+			 * @error custom-image-upload-adapter-missing-authOpenIdService
+			 */
+			console.error( 'custom-image-upload-adapter-missing-authOpenIdService' );
+
+			return;
+		}
 	}
 
-	if ( !options.baseApiUrl ) {
-		/**
-		 * The {@link path:./adapters/customimageupload~CustomImageUploadConfig#baseApiUrl `config.customImageUpload.baseApiUrl`}
-		 * configuration required by the {@link path:./adapters/customimageupload~CustomImageUploadAdapter `CustomImageUploadAdapter`}
-		 * is missing. Make sure the correct URL is specified for the image upload to work properly.
-		 *
-		 * @error custom-image-upload-adapter-missing-baseApiUrl
-		 */
-		console.error( 'custom-image-upload-adapter-missing-baseApiUrl' );
-
-		return;
+	/**
+	 * @inheritDoc
+	 */
+	static get requires() {
+		return [ FileRepository ];
 	}
 
-	if ( !options.api ) {
-		/**
-		 * The {@link path:./adapters/customimageupload~CustomImageUploadConfig#api `config.customImageUpload.api`}
-		 * configuration required by the {@link path:./adapters/customimageupload~CustomImageUploadAdapter `CustomImageUploadAdapter`}
-		 * is missing. Make sure the correct URL is specified for the image upload to work properly.
-		 *
-		 * @error custom-image-upload-adapter-missing-api
-		 */
-		console.error( 'custom-image-upload-adapter-missing-api' );
-
-		return;
+	/**
+	 * @inheritDoc
+	 */
+	static get pluginName() {
+		return 'CustomImageUploadAdapterPlugin';
 	}
 
-	if ( options.baseApiUrl && options.api && !options.authOpenIdService ) {
-		/**
-		 * The
-		 * {@link path:./adapters/customimageupload~CustomImageUploadConfig#authOpenIdService `config.customImageUpload.authOpenIdService`}
-		 * configuration required by the {@link path:./adapters/customimageupload~CustomImageUploadAdapter `CustomImageUploadAdapter`}
-		 * is missing. Make sure the correct URL is specified for the image upload to work properly.
-		 *
-		 * @error custom-image-upload-adapter-missing-authOpenIdService
-		 */
-		console.error( 'custom-image-upload-adapter-missing-authOpenIdService' );
-
-		return;
-	}
-
-	editor.plugins.get( 'FileRepository' ).createUploadAdapter = loader => {
-		// Configure the URL to the upload script in your back-end here!
-		return new CustomImageUploadAdapter(
-			loader,
-			editor.config.get( 'customImageUpload' )
-		);
-	};
+	/**
+	 * @inheritDoc
+	 */
+	init() {
+		this.editor.plugins.get( FileRepository).createUploadAdapter = loader => {
+			// Configure the URL to the upload script in your back-end here!
+			var customImageUploadAdapter = new CustomImageUploadAdapter(
+				loader,
+				this.editor.config.get( 'customImageUpload' )
+			);
+			this.adapter = customImageUploadAdapter.uploadComplete;
+			
+			return customImageUploadAdapter;
+		};
+	}	
 }
