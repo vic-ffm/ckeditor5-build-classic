@@ -174,7 +174,7 @@ import FileRepository from '@ckeditor/ckeditor5-upload/src/filerepository';
 export default class CustomImageUploadAdapterPlugin extends Plugin {
 	constructor( editor ) {
 		// Here, it calls the parent class's constructor with editor
-		super(editor);
+		super( editor );
 		const options = editor.config.get( 'customImageUpload' );
 
 		if ( !options ) {
@@ -218,15 +218,14 @@ export default class CustomImageUploadAdapterPlugin extends Plugin {
 		if ( options.baseApiUrl && options.api && !options.authOpenIdService ) {
 			/**
 			 * The
-			 * {@link path:./adapters/customimageupload~CustomImageUploadConfig#authOpenIdService `config.customImageUpload.authOpenIdService`}
+			 * {@link path:./adapters/customimageupload~CustomImageUploadConfig#authOpenIdService
+			 * `config.customImageUpload.authOpenIdService`}
 			 * configuration required by the {@link path:./adapters/customimageupload~CustomImageUploadAdapter `CustomImageUploadAdapter`}
 			 * is missing. Make sure the correct URL is specified for the image upload to work properly.
 			 *
 			 * @error custom-image-upload-adapter-missing-authOpenIdService
 			 */
 			console.error( 'custom-image-upload-adapter-missing-authOpenIdService' );
-
-			return;
 		}
 	}
 
@@ -248,15 +247,15 @@ export default class CustomImageUploadAdapterPlugin extends Plugin {
 	 * @inheritDoc
 	 */
 	init() {
-		this.editor.plugins.get( FileRepository).createUploadAdapter = loader => {
+		this.editor.plugins.get( FileRepository ).createUploadAdapter = loader => {
 			// Configure the URL to the upload script in your back-end here!
-			var customImageUploadAdapter = new CustomImageUploadAdapter(
+			const customImageUploadAdapter = new CustomImageUploadAdapter(
 				loader,
 				this.editor.config.get( 'customImageUpload' )
 			);
 			this.adapter = customImageUploadAdapter.uploadComplete;
-			
+
 			return customImageUploadAdapter;
 		};
-	}	
+	}
 }
